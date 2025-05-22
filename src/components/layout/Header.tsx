@@ -18,6 +18,18 @@ const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // When mobile menu is open, prevent body scrolling
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
+
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
 
   const handleDisconnect = async () => {
@@ -133,6 +145,7 @@ const Header: React.FC = () => {
           <button 
             className="md:hidden text-white" 
             onClick={toggleMobileMenu}
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
             {mobileMenuOpen ? (
               <X className="h-6 w-6 text-cyan-glow" />
@@ -145,11 +158,20 @@ const Header: React.FC = () => {
 
       {/* Mobile Menu */}
       <div 
-        className={`fixed inset-0 bg-black/95 z-40 flex flex-col items-center justify-center transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-0 bg-black/95 z-40 transition-transform duration-300 ease-in-out ${
           mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         } md:hidden`}
       >
-        <nav className="flex flex-col items-center space-y-6">
+        {/* Close button positioned at the top right */}
+        <button
+          onClick={toggleMobileMenu}
+          className="absolute top-4 right-4 p-2 text-cyan-glow hover:text-cyan-glow/80 transition-colors"
+          aria-label="Close menu"
+        >
+          <X className="h-8 w-8" />
+        </button>
+
+        <nav className="flex flex-col items-center justify-center h-full space-y-6">
           {['Mission', 'Story', 'Technology', 'Community', 'Join'].map((item) => (
             <a 
               key={item}
