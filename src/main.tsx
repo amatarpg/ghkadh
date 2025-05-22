@@ -3,7 +3,15 @@ import { createRoot } from 'react-dom/client';
 import { 
   RainbowKitProvider,
   getDefaultWallets,
+  connectorsForWallets,
 } from '@rainbow-me/rainbowkit';
+import {
+  okxWallet,
+  trustWallet,
+  bitgetWallet,
+  walletConnectWallet,
+  binanceWallet,
+} from '@rainbow-me/rainbowkit/wallets';
 import { http, createConfig, WagmiProvider } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -20,11 +28,26 @@ const config = createConfig({
   }
 });
 
-const { wallets } = getDefaultWallets({
-  appName: '$CIGAR Protocol',
-  projectId,
-  chains: [mainnet]
-});
+const connectors = connectorsForWallets([
+  {
+    groupName: 'Popular',
+    wallets: [
+      okxWallet({ projectId }),
+      bitgetWallet({ projectId }),
+      binanceWallet({ projectId }),
+      trustWallet({ projectId }),
+      walletConnectWallet({ projectId }),
+    ],
+  },
+  {
+    groupName: 'Other',
+    wallets: getDefaultWallets({
+      appName: '$CIGAR Protocol',
+      projectId,
+      chains: [mainnet],
+    }).wallets,
+  },
+]);
 
 const queryClient = new QueryClient();
 
@@ -32,7 +55,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider wallets={wallets}>
+        <RainbowKitProvider>
           <App />
         </RainbowKitProvider>
       </QueryClientProvider>
