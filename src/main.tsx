@@ -25,7 +25,8 @@ const config = createConfig({
   chains: [mainnet],
   transports: {
     [mainnet.id]: http()
-  }
+  },
+  connectors,
 });
 
 const connectors = connectorsForWallets([
@@ -57,7 +58,7 @@ createRoot(document.getElementById('root')!).render(
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
           <App />
-        </RainbowKitProvider>
+        </RainbowKitProvider chains={[mainnet]}>
       </QueryClientProvider>
     </WagmiProvider>
   </StrictMode>
