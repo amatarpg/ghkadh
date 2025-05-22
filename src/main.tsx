@@ -21,14 +21,6 @@ import './index.css';
 
 const projectId = '3bf26c277abb57e44af9fcc2121db184';
 
-const config = createConfig({
-  chains: [mainnet],
-  transports: {
-    [mainnet.id]: http()
-  },
-  connectors,
-});
-
 const connectors = connectorsForWallets([
   {
     groupName: 'Popular',
@@ -49,6 +41,14 @@ const connectors = connectorsForWallets([
     }).wallets,
   },
 ]);
+
+const config = createConfig({
+  chains: [mainnet],
+  transports: {
+    [mainnet.id]: http()
+  },
+  connectors,
+});
 
 const queryClient = new QueryClient();
 
