@@ -58,7 +58,7 @@ createRoot(document.getElementById('root')!).render(
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
           <App />
-        </RainbowKitProvider chains={[mainnet]}>
+        </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   </StrictMode>
