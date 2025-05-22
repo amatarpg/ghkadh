@@ -21,6 +21,13 @@ import './index.css';
 
 const projectId = '3bf26c277abb57e44af9fcc2121db184';
 
+const config = createConfig({
+  chains: [mainnet],
+  transports: {
+    [mainnet.id]: http()
+  },
+});
+
 const connectors = connectorsForWallets([
   {
     groupName: 'Popular',
@@ -42,13 +49,6 @@ const connectors = connectorsForWallets([
   },
 ]);
 
-const config = createConfig({
-  chains: [mainnet],
-  transports: {
-    [mainnet.id]: http()
-  },
-  connectors,
-});
 
 const queryClient = new QueryClient();
 
@@ -56,7 +56,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider chains={[mainnet]}>
+        <RainbowKitProvider>
           <App />
         </RainbowKitProvider>
       </QueryClientProvider>
