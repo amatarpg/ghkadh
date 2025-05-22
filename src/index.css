@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&family=Exo:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-cyan: #00FFFF;
+  --color-electric-blue: #0892D0;
+  --color-magenta: #FF00FF;
+  --color-dark-blue: #050A30;
+  --color-black: #000000;
+}
+
+body {
+  @apply bg-black text-white overflow-x-hidden;
+  font-family: 'Space Mono', monospace;
+}
+
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.font-spaceMono {
+  font-family: 'Space Mono', monospace;
+}
+
+.font-exo {
+  font-family: 'Exo', sans-serif;
+}
+
+.tech-grid {
+  background-image: linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+.scanline-overlay {
+  @apply fixed top-0 left-0 w-full h-screen pointer-events-none z-50 opacity-10;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    rgba(0, 255, 255, 0.05) 1px,
+    transparent 2px
+  );
+  animation: scanlines 10s linear infinite;
+}
+
+/* Smoke Effect */
+.smoke-effect {
+  @apply fixed inset-0 pointer-events-none z-10;
+  background: url('https://images.pexels.com/photos/5476414/pexels-photo-5476414.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') repeat;
+  opacity: 0.1;
+  mix-blend-mode: screen;
+  animation: smoke 20s linear infinite;
+}
+
+.smoke-text-effect {
+  @apply absolute inset-0 pointer-events-none;
+  background: url('https://images.pexels.com/photos/5476414/pexels-photo-5476414.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') repeat;
+  opacity: 0.15;
+  mix-blend-mode: screen;
+  animation: smoke-text 15s linear infinite;
+  mask-image: linear-gradient(to bottom, transparent, black 25%, black 75%, transparent);
+}
+
+@keyframes smoke {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.5);
+  }
+  50% {
+    transform: translate3d(-10%, -10%, 0) scale(1.6);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.5);
+  }
+}
+
+@keyframes smoke-text {
+  0% {
+    transform: translate3d(0, 0, 0) scale(2);
+  }
+  50% {
+    transform: translate3d(-5%, -5%, 0) scale(2.1);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(2);
+  }
+}
+
+.glow-text {
+  text-shadow: 0 0 10px var(--color-cyan), 0 0 20px var(--color-cyan);
+}
+
+.glow-box {
+  box-shadow: 0 0 10px var(--color-cyan), 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.magenta-glow {
+  text-shadow: 0 0 10px var(--color-magenta), 0 0 20px var(--color-magenta);
+}
+
+.electric-blue-glow {
+  text-shadow: 0 0 10px var(--color-electric-blue), 0 0 20px var(--color-electric-blue);
+}
+
+.neon-border {
+  @apply border-2 relative;
+  box-shadow: 0 0 5px var(--color-cyan), inset 0 0 5px var(--color-cyan);
+}
+
+.parallax-scroll {
+  transform: translateY(var(--scroll-offset, 0));
+  transition: transform 0.1s ease-out;
+}
+
+@keyframes scanlines {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@layer components {
+  .button-primary {
+    @apply px-6 py-3 bg-transparent border-2 border-cyan-400 text-cyan-400 
+           font-orbitron font-bold uppercase tracking-wider text-sm 
+           hover:bg-cyan-400/20 transition-all duration-300 rounded
+           flex items-center justify-center relative overflow-hidden
+           after:absolute after:inset-0 after:bg-cyan-400/10 after:opacity-0
+           hover:after:opacity-100 after:transition-opacity;
+  }
+  
+  .section-title {
+    @apply font-orbitron text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-white glow-text;
+  }
+  
+  .section-subtitle {
+    @apply font-spaceMono text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto;
+  }
+  
+  .tech-card {
+    @apply bg-gray-900/50 border border-cyan-400/30 p-6 rounded-lg
+           backdrop-blur-sm hover:border-cyan-400 transition-all duration-300
+           hover:shadow-[0_0_15px_rgba(0,255,255,0.3)];
+  }
+}
