@@ -1,17 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { 
-  RainbowKitProvider,
-  getDefaultWallets,
-  connectorsForWallets,
-} from '@rainbow-me/rainbowkit';
 import {
-  okxWallet,
-  trustWallet,
-  bitgetWallet,
-  walletConnectWallet,
-  binanceWallet,
-} from '@rainbow-me/rainbowkit/wallets';
+  RainbowKitProvider,
+  getDefaultWallets
+} from '@rainbow-me/rainbowkit';
 import { http, createConfig, WagmiProvider } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -20,36 +12,22 @@ import App from './App.tsx';
 import './index.css';
 
 const projectId = '3bf26c277abb57e44af9fcc2121db184';
+const chains = [mainnet];
 
-const { wallets } = getDefaultWallets({
+// ✅ Ambil connectors
+const { wallets, connectors } = getDefaultWallets({
   appName: '$CIGAR Protocol',
   projectId,
-  chains: [mainnet],
+  chains,
 });
 
 const config = createConfig({
-  chains: [mainnet],
+  chains,
+  connectors, // ✅ tambahkan ini
   transports: {
-    [mainnet.id]: http()
+    [mainnet.id]: http(),
   },
 });
-
-const connectors = connectorsForWallets([
-  {
-    groupName: 'Popular',
-    wallets: [
-      okxWallet({ projectId }),
-      bitgetWallet({ projectId }),
-      binanceWallet({ projectId }),
-      trustWallet({ projectId }),
-      walletConnectWallet({ projectId }),
-    ],
-  },
-  {
-    groupName: 'Other',
-    wallets: wallets.map((wallet) => wallet({ projectId })),
-  },
-]);
 
 const queryClient = new QueryClient();
 
@@ -57,7 +35,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>
+        <RainbowKitProvider chains={chains}>
           <App />
         </RainbowKitProvider>
       </QueryClientProvider>
